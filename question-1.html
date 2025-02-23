@@ -129,6 +129,7 @@
         <br /><br />
 
         <button onclick="convertCurrency()" id="convert">Convert</button>
+        <h2 id="converted-amount">Converted Amount</h2>
       </div>
     </div>
   </body>
@@ -142,6 +143,7 @@
     let inputType = document.getElementById("type").value;
     let inputDate = document.getElementById("date").value;
     let inputCategory = document.getElementById("category").value;
+    let div = document.getElementById("transaction-list");
 
     let ul_lists = document.getElementById("transaction-list-ul");
 
@@ -154,11 +156,39 @@
             <p>Category-:${inputCategory}</p>`;
 
     ul_lists.appendChild(li);
+    div.appendChild(ul_lists)
+
+    
+
+
   }
 
-  function convertCurrency() {
+   async function convertCurrency() {
     let ammount = document.getElementById("amount");
-    let selected = document.getElementById("from-amount");
+    let convertFrom = document.getElementById("from-amount");
     let convertTo = document.getElementById("to-amount");
+    let myApiKey="f33986ec360487f8c6c9bb15"
+    let url = "https://v6.exchangerate-api.com/v6/f33986ec360487f8c6c9bb15/latest/USD"
+
+
+    try {
+        let response = await fetch(url);
+         let data = await response.json();
+
+         let ammountFinal = data.conversion_rates[convertTo] /  data.conversion_rates[convertFrom];
+
+         let finalAmmount = document.getElementById('converted-amount').innerText = ammountFinal;
+        
+    } catch (error) {
+
+        console.log("Error Occured! Try to fetch Data again. ")
+        
+    }
+
+    
+    
+
+
+
   }
 </script>
