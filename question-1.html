@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Page</title>
+  </head>
+
+  <!-- css -->
+  <style>
+    body {
+      padding: 20px;
+      background-color: rgb(212, 210, 210);
+    }
+    #container {
+      padding: 10px;
+      background-color: rgb(255, 255, 255);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    #form {
+      background-color: rgb(159, 168, 165);
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    #transaction-list {
+      background-color: rgb(159, 168, 165);
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    #summary {
+      background-color: rgb(159, 168, 165);
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    #currency-convert {
+      background-color: rgb(159, 168, 165);
+      border-radius: 5px;
+      padding: 20px;
+    }
+    button {
+      border-radius: 3px;
+      background-color: rgb(80, 171, 187);
+      color: white;
+      border: 2px solid white;
+    }
+
+    button:hover {
+      background-color: aqua;
+      color: gray;
+    }
+  </style>
+
+  <body>
+    <!-- body -->
+    <div id="container">
+      <!-- 1 -->
+      <form id="form">
+        <label for="name">Transaction Name:</label><br />
+        <input type="text" id="name" /><br /><br />
+        <label for="amount">Amount:</label><br />
+        <input type="text" id="amount" /><br /><br />
+        <label for="type">Type:</label><br />
+        <input type="text" id="type" /><br /><br />
+        <label for="date">Date:</label><br />
+        <input type="text" id="date" /><br /><br />
+
+        <select name="category" id="category">
+          <option value="transport">Transport</option>
+          <option value="rent">Rents</option></select
+        ><br /><br />
+
+        <button onclick="addTransaction()" id="formButton" type="submit">
+          Add Transaction</button
+        ><br /><br />
+      </form>
+
+      <!-- 2 -->
+      <div id="transaction-list">
+        transaction-list
+
+        <ul id="transaction-list-ul"></ul>
+      </div>
+
+      <!-- summary -->
+      <!-- Displays Total Income, Total Expenses, and Net Balance -->
+      <div id="summary">
+        <div id="total-income">
+          Total Income
+          <ul id="income"></ul>
+        </div>
+        <div id="total-expenses">
+          Total Expenses
+          <ul id="expenses"></ul>
+        </div>
+        <div id="net-balance">
+          Net Balance
+          <ul id="balance"></ul>
+        </div>
+      </div>
+
+      <!-- Input for amount in convert -->
+
+      <div id="currency-convert">
+        <h3>Convert Currency</h3>
+        <label for="amount">Enter Ammount:</label><br />
+        <input type="number" id="ammount" /><br /><br />
+
+        <label for="amount">From:</label>
+        <select id="from-amount">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+        </select>
+        <br /><br />
+
+        <label for="amount">To:</label>
+        <select id="to-amount">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+        </select>
+        <br /><br />
+
+        <button onclick="convertCurrency()" id="convert">Convert</button>
+      </div>
+    </div>
+  </body>
+</html>
+
+<!-- Js -->
+<script>
+  function addTransaction() {
+    let inputAmount = document.getElementById("amount").value;
+    let inputName = document.getElementById("name").value;
+    let inputType = document.getElementById("type").value;
+    let inputDate = document.getElementById("date").value;
+    let inputCategory = document.getElementById("category").value;
+
+    let ul_lists = document.getElementById("transaction-list-ul");
+
+    let li = document.createElement("li");
+
+    li.innerHTML = `<h4>Amount-:${inputAmmount}</h4>
+            <h4>Name-:${inputName}</h4>
+            <p>Type-:${inputType}</p>
+            <p>Date-:${inputDate}</p>
+            <p>Category-:${inputCategory}</p>`;
+
+    ul_lists.appendChild(li);
+  }
+
+  function convertCurrency() {
+    let ammount = document.getElementById("amount");
+    let selected = document.getElementById("from-amount");
+    let convertTo = document.getElementById("to-amount");
+  }
+</script>
