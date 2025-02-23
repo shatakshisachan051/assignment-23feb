@@ -156,42 +156,29 @@
             <p>Category-:${inputCategory}</p>`;
 
     ul_lists.appendChild(li);
-    div.appendChild(ul_lists)
+    div.appendChild(ul_lists);
 
-    event.preventDefault()
-
-    
-
-
+    event.preventDefault();
   }
 
-   async function convertCurrency() {
+  async function convertCurrency() {
     let ammount = document.getElementById("amount");
     let convertFrom = document.getElementById("from-amount");
     let convertTo = document.getElementById("to-amount");
-    let myApiKey="f33986ec360487f8c6c9bb15"
-    let url = "https://v6.exchangerate-api.com/v6/f33986ec360487f8c6c9bb15/latest/USD"
-
+    let myApiKey = "f33986ec360487f8c6c9bb15";
+    let url =
+      "https://v6.exchangerate-api.com/v6/f33986ec360487f8c6c9bb15/latest/USD";
 
     try {
-        let response = await fetch(url);
-         let data = await response.json();
+      let response = await fetch(url);
+      let data = await response.json();
 
-         let ammountFinal = data.conversion_rates[convertTo] /  data.conversion_rates[convertFrom];
+      let ammountFinal =
+        data.conversion_rates[convertTo] / data.conversion_rates[convertFrom];
 
-     
-         document.getElementById('converted-amount').innerText = ammountFinal;
-        
+      document.getElementById("converted-amount").innerText = ammountFinal;
     } catch (error) {
-
-        console.log("Error Occured! Try to fetch Data again. ")
-        
+      console.log("Error Occured! Try to fetch Data again. ");
     }
-
-    
-    
-
-
-
   }
 </script>
