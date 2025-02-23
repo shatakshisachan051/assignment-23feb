@@ -149,7 +149,7 @@
 
     let li = document.createElement("li");
 
-    li.innerHTML = `<h4>Amount-:${inputAmmount}</h4>
+    li.innerHTML = `<h4>Amount-:${inputAmount}</h4>
             <h4>Name-:${inputName}</h4>
             <p>Type-:${inputType}</p>
             <p>Date-:${inputDate}</p>
@@ -157,6 +157,8 @@
 
     ul_lists.appendChild(li);
     div.appendChild(ul_lists)
+
+    event.preventDefault()
 
     
 
