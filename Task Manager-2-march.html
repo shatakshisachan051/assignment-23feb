@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager App</title>
+  </head>
+
+  <!-- CSS -->
+  <style>
+    body {
+      font-family: "Times New Roman", Times, serif;
+      margin: 10px;
+      padding: 10px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      width: 80%;
+      margin: 20px auto;
+    }
+    button {
+      margin: 10px;
+    }
+
+    #taskBox1 input {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 3px solid white;
+      border-radius: 8px;
+    }
+
+    #taskBox1 textarea,
+    #taskBox1 select,
+    #taskFilter select,
+    #taskFilter input {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 3px solid white;
+      border-radius: 8px;
+    }
+    #taskBox1,
+    #taskSummary,
+    #taskFilter {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 3px solid #efc7df;
+      border-radius: 10px;
+    }
+    #taskBox1 button,
+    header button {
+      background-color: #a33c78;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 7px;
+    }
+
+    /* .task{
+        display: flex;
+        align-items: center;
+    } */
+
+    #taskFilter select,
+    #taskFilter input {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 3px solid white;
+      border-radius: 8px;
+    }
+
+    #allTaskListBox .task {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      align-items: center;
+    }
+
+    .darkMode {
+      background-color: #333;
+      color: black;
+    }
+
+    .darkMode #taskBox1 input,
+    .darkMode #tastInput textarea {
+      color: rgb(183, 171, 171);
+      border-color: #070101;
+    }
+    .darkMode #taskBox1 select,
+    .darkMode #taskFilter input,
+    .darkMode #taskFilter select {
+      color: rgb(0, 0, 0);
+      border-color: #070101;
+    }
+    #allTaskListBox .task.completed {
+      text-decoration: line-through;
+    }
+
+    #taskBox1 {
+      display: flex;
+      justify-content: center;
+      gap: 3px;
+    }
+    /* input{
+        border: none;
+    } */
+  </style>
+
+  <body>
+    <!-- HTML -->
+    <div id="container">
+      <header>
+        <h1 style="text-align: center">Task Manager</h1>
+        <button onclick="toggleMode()">Dark Mode</button>
+      </header>
+      <!-- Input box -->
+      <section id="taskBox1">
+        <input
+          type="text"
+          id="taskName"
+          placeholder="write your task here..."
+        />
+        <textarea
+          id="taskDetails"
+          placeholder="write task details here..."
+        ></textarea>
+        <input type="date" id="dueDate" />
+        <select id="category">
+          <option value="Personal">Personal</option>
+          <option value="hobby">Hbbies</option>
+          <option value="work">Work</option>
+        </select>
+        <button onclick="addTask()">Add Task</button>
+      </section>
+
+      <section id="taskSummary">
+        <p>Total Tasks :<span id="totalTasks">0</span></p>
+        <p>Task Completed :<span id="completedTasks">0 </span></p>
+        <p>Task inCompleted :<span id="pendingTasks">0</span></p>
+      </section>
+
+      <section id="taskFilter">
+        <select onchange="displayallTaskListBox()" id="catagoryFilter">
+          <option value="all">All</option>
+          <option value="work">Work</option>
+          <option value="Personal">Personal</option>
+          <option value="hobby">Hobbies</option>
+        </select>
+
+        <select onchange="displayallTaskListBox()" id="filterStatus">
+          <option value="all">All status</option>
+          <option value="completed">Completed</option>
+          <option
+            value="pending
+                 "
+          >
+            Pending
+          </option>
+        </select>
+        <input
+          type="date"
+          id="dueDatesFilter"
+          onchange="displayallTaskListBox()"
+        />
+      </section>
+
+      <section id="allTaskListBox">
+        <!--  -->
+      </section>
+    </div>
+
+    <!-- <div>
+        <input type="checkbox" ${task.completed ?"checked":""} onclick="toggleComplete(${ind})">
+        <span>${task.name}</span>
+        <p>${task.description}</p>
+        <small>Due: ${task.dueDate}, Category: ${task.category}</small>
+    </div> -->
+  </body>
+</html>
+
+<!-- JS -->
+
+<script>
+  let taskNameInput = document.getElementById("taskName");
+  let taskDetailsInput = document.getElementById("taskDetails");
+  let dueDateInput = document.getElementById("dueDate");
+  let categoryInput = document.getElementById("category");
+
+  let allTaskListBox = document.getElementById("allTaskListBox");
+  let totalTasksSpan = document.getElementById("totalTasks");
+  let completedTasksSpan = document.getElementById("completedTasks");
+
+  let pendingTasksSpan = document.getElementById("pendingTasks");
+  let catagoryFilterSelect = document.getElementById("catagoryFilter");
+  let filterStatusSelect = document.getElementById("filterStatus");
+  let dueDatesFilterInput = document.getElementById("dueDatesFilter");
+
+  document.addEventListener("DOMContentLoaded", () => {
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    window.displayallTaskListBox = function () {
+      allTaskListBox.innerHTML = "";
+      let catagoryFilter = catagoryFilterSelect.value;
+      let filterStatus = filterStatusSelect.value;
+
+      let dueDatesFilter = dueDatesFilterInput.value;
+      let filteredTasks = tasks.filter((task) => {
+        if (filterStatus !== "all") {
+          if (filterStatus === "completed" && !task.completed) {
+            return false;
+          }
+          if (filterStatus === "pending" && task.completed) {
+            return false;
+          }
+        }
+        if (dueDatesFilter && task.dueDate !== dueDatesFilter) {
+          return false;
+        }
+        if (catagoryFilter !== "all" && task.category !== catagoryFilter) {
+          return false;
+        }
+
+        return true;
+      });
+
+      filteredTasks.forEach((task, ind) => {
+        let taskItem2 = document.createElement("div");
+        taskItem2.classList.add("task");
+        if (task.completed) {
+          taskItem2.classList.add("completed");
+        }
+
+        taskItem2.innerHTML = `
+                <div>
+                    <input type="checkbox" ${
+                      task.completed ? "checked" : ""
+                    } onclick="toggleComplete(${ind})">
+                    <span>${task.name}</span>
+                    <p>${task.description}</p>
+                    <small>Due: ${task.dueDate}, Category: ${
+          task.category
+        }</small>
+                 </div>         
+                `;
+
+        allTaskListBox.appendChild(taskItem2);
+
+      });
+      sumaryUpdates();
+    };
+    function sumaryUpdates() {
+      totalTasksSpan.textContent = tasks.length;
+      completedTasksSpan.textContent = tasks.filter(
+        (task) => task.completed
+      ).length;
+      pendingTasksSpan.textContent = tasks.filter(
+        (task) => !task.completed
+      ).length;
+    }
+    window.toggleMode = function () {
+      document.body.classList.toggle("darkMode");
+    };
+
+    function saveTasks() {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    
+
+    window.toggleTasksStatus = function (ind) {
+      tasks[ind].completed = !tasks[ind].completed;
+      saveTasks();
+      sumaryUpdates();
+      displayallTaskListBox();
+    };
+    window.addTask = function () {
+      let name = taskNameInput.value;
+      let description = taskDetailsInput.value;
+      let dueDate = dueDateInput.value;
+      let category = categoryInput.value;
+
+      if (name.trim() === "") {
+        return;
+      }
+
+      tasks.push({ name, description, dueDate, category, completed: false });
+      taskNameInput.value = "";
+      taskDetailsInput.value = "";
+      dueDateInput.value = "";
+      saveTasks();
+      sumaryUpdates();
+      displayallTaskListBox();
+    };
+    
+    
+
+    displayallTaskListBox();
+  });
+  
+</script>
